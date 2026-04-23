@@ -6,13 +6,9 @@ import { cn } from "@/lib/utils"
 export interface StarfieldBackgroundProps {
   className?: string
   children?: React.ReactNode
-  /** Number of stars */
   count?: number
-  /** Travel speed */
   speed?: number
-  /** Star color */
   starColor?: string
-  /** Enable twinkling */
   twinkle?: boolean
 }
 
@@ -24,6 +20,8 @@ interface Star {
   twinkleOffset: number
 }
 
+// Esse componente desenha o fundo estrelado em canvas.
+// Login, cadastro e dashboard reutilizam ele para nao duplicar codigo.
 export function StarfieldBackground({
   className,
   children,
@@ -54,7 +52,7 @@ export function StarfieldBackground({
 
     const maxDepth = 1500
 
-    // Create stars
+    // Cada estrela recebe uma posicao em profundidade para dar o efeito 3D.
     const createStar = (initialZ?: number): Star => ({
       x: (Math.random() - 0.5) * width * 2,
       y: (Math.random() - 0.5) * height * 2,
@@ -65,7 +63,6 @@ export function StarfieldBackground({
 
     const stars: Star[] = Array.from({ length: count }, () => createStar())
 
-    // Resize handler
     const handleResize = () => {
       const rect = container.getBoundingClientRect()
       width = rect.width
@@ -77,11 +74,10 @@ export function StarfieldBackground({
     const ro = new ResizeObserver(handleResize)
     ro.observe(container)
 
-    // Animation
     const animate = () => {
       tick++
 
-      // Fade effect for trails
+      // Pintar com transparencia ajuda a criar o rastro do movimento.
       ctx.fillStyle = "rgba(10, 10, 15, 0.2)"
       ctx.fillRect(0, 0, width, height)
 
@@ -89,49 +85,45 @@ export function StarfieldBackground({
       const cy = height / 2
 
       for (const star of stars) {
-        // Move star toward camera
         star.z -= speed * 2
 
-        // Reset if passed camera
         if (star.z <= 0) {
           star.x = (Math.random() - 0.5) * width * 2
           star.y = (Math.random() - 0.5) * height * 2
           star.z = maxDepth
         }
 
-        // Project to 2D
         const scale = 400 / star.z
         const x = cx + star.x * scale
         const y = cy + star.y * scale
 
-        // Skip if off screen
         if (x < -10 || x > width + 10 || y < -10 || y > height + 10) continue
 
-        // Size based on depth (closer = bigger)
         const size = Math.max(0.5, (1 - star.z / maxDepth) * 3)
 
-        // Opacity based on depth (closer = brighter)
         let opacity = (1 - star.z / maxDepth) * 0.9 + 0.1
 
-        // Twinkle effect
         if (twinkle && star.twinkleSpeed > 0.015) {
-          opacity *= 0.7 + 0.3 * Math.sin(tick * star.twinkleSpeed + star.twinkleOffset)
+          opacity *=
+            0.7 + 0.3 * Math.sin(tick * star.twinkleSpeed + star.twinkleOffset)
         }
 
-        // Draw star
         ctx.beginPath()
         ctx.arc(x, y, size, 0, Math.PI * 2)
         ctx.fillStyle = starColor
         ctx.globalAlpha = opacity
         ctx.fill()
 
-        // Draw subtle streak for fast/close stars
         if (star.z < maxDepth * 0.3 && speed > 0.3) {
           const streakLength = (1 - star.z / maxDepth) * speed * 8
           const angle = Math.atan2(star.y, star.x)
+
           ctx.beginPath()
           ctx.moveTo(x, y)
-          ctx.lineTo(x - Math.cos(angle) * streakLength, y - Math.sin(angle) * streakLength)
+          ctx.lineTo(
+            x - Math.cos(angle) * streakLength,
+            y - Math.sin(angle) * streakLength
+          )
           ctx.strokeStyle = starColor
           ctx.globalAlpha = opacity * 0.3
           ctx.lineWidth = size * 0.5
@@ -143,7 +135,6 @@ export function StarfieldBackground({
       animationId = requestAnimationFrame(animate)
     }
 
-    // Initial clear
     ctx.fillStyle = "#0a0a0f"
     ctx.fillRect(0, 0, width, height)
 
@@ -156,29 +147,28 @@ export function StarfieldBackground({
   }, [count, speed, starColor, twinkle])
 
   return (
-    <div ref={containerRef} className={cn("fixed inset-0 overflow-hidden bg-[#0a0a0f]", className)}>
-      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
+    <div className={cn("relative min-h-screen w-full bg-[#0a0a0f]", className)}>
+      <div ref={containerRef} className="absolute inset-0">
+        <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
-      {/* Subtle blue nebula glow */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-30"
-        style={{
-          background:
-            "radial-gradient(ellipse at 30% 40%, rgba(56, 100, 180, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 70% 60%, rgba(100, 60, 150, 0.1) 0%, transparent 50%)",
-        }}
-      />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-30"
+          style={{
+            background:
+              "radial-gradient(ellipse at 30% 40%, rgba(56, 100, 180, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 70% 60%, rgba(100, 60, 150, 0.1) 0%, transparent 50%)",
+          }}
+        />
 
-      {/* Vignette */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, transparent 0%, transparent 40%, rgba(5,5,10,0.9) 100%)",
-        }}
-      />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, transparent 0%, transparent 40%, rgba(5,5,10,0.9) 100%)",
+          }}
+        />
+      </div>
 
-      {/* Content layer */}
-      {children && <div className="relative z-10 h-full w-full">{children}</div>}
+      {children && <div className="relative z-10">{children}</div>}
     </div>
   )
 }

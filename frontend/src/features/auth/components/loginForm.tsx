@@ -4,13 +4,63 @@ import { Inputs } from "@/components/ui/Input"
 import Image from "next/image"
 import Link from "next/link"
 import { FormEvent, useState } from "react"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/contexts/AuthContext"
 
+// Esse componente cuida so do card e da logica do formulario de login.
+// A pagina /login so monta o fundo e centraliza ele.
 export default function LoginForm() {
+  const router = useRouter()
+  const { refreshUser } = useAuth()
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [erro, setErro] = useState("")
+  const [sucesso, setSucesso] = useState("")
+  const [loading, setLoading] = useState(false)
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault()
+
+    setErro("")
+    setSucesso("")
+
+    try {
+      setLoading(true)
+
+      // A chamada vai para a rota do Next, e ela conversa com o backend.
+      const response = await fetch("/api/session/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setErro(data.error || "Erro ao realizar login")
+        return
+      }
+
+      // Atualiza o contexto para o resto da aplicacao saber que houve login.
+      await refreshUser()
+
+      setSucesso(`Bem-vindo, ${data.user.name || data.user.email}!`)
+
+      setTimeout(() => {
+        router.push("/dashboard")
+      }, 1200)
+    } catch {
+      setErro("Não foi possível conectar ao servidor")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -50,13 +100,18 @@ export default function LoginForm() {
           autoComplete="current-password"
         />
 
+        {erro && <p className="text-sm text-red-500 text-center">{erro}</p>}
+        {sucesso && <p className="text-sm text-green-600 text-center">{sucesso}</p>}
+
         <button
           type="submit"
+          disabled={loading}
           className="bg-zinc-800 h-12 rounded-lg
               text-zinc-100 text-sm font-bold
-              hover:bg-zinc-700/80 transition-colors duration-200"
+              hover:bg-zinc-700/80 transition-colors duration-200
+              disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Entrar
+          {loading ? "Entrando..." : "Entrar"}
         </button>
 
         <div className="flex items-center justify-center">
@@ -69,7 +124,7 @@ export default function LoginForm() {
           </Link>
         </div>
 
-        <span className="text-zinc-900 text-sm text-center">Ou entre com</span>
+        <span className="text-zinc-900 text-sm">Ou entre com</span>
 
         <button
           type="button"
