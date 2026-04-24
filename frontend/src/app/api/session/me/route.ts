@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 
-// Essa rota pergunta ao backend quem e o usuario atual.
-// Ela so reaproveita o cookie que ja chegou do navegador.
+// Essa rota pergunta ao backend quem é o usuário atual.
+// Ela só reaproveita o cookie que já chegou do navegador.
 export async function GET(request: NextRequest) {
   const cookie = request.headers.get("cookie")
 

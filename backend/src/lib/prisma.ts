@@ -1,4 +1,4 @@
 import { PrismaClient } from "@prisma/client"
 
-// Cliente unico do Prisma para ser reutilizado pelos services.
+// Cliente único do Prisma para ser reutilizado pelos services.
 export const prisma = new PrismaClient()

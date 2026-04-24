@@ -6,7 +6,8 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   icon?: React.ReactNode
 }
 
-// Input reutilizavel para nao repetir o mesmo visual em login e cadastro.
+// Esse input é usado em mais de um formulário.
+// A ideia é manter o mesmo estilo sem repetir classes toda hora.
 export const Inputs = forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, className = "", id, icon, ...props }, ref) => {
     return (
@@ -30,8 +31,8 @@ export const Inputs = forwardRef<HTMLInputElement, InputProps>(
           <input
             id={id}
             ref={ref}
-            // Aqui ficam as classes padrao do campo.
-            // O className extra serve para ajustar algum caso especifico.
+            // Aqui ficam as classes base do campo.
+            // O className extra serve para pequenos ajustes quando precisar.
             className={`
               w-full h-12 rounded-lg 
               bg-zinc-900/40 backdrop-blur-md
@@ -42,15 +43,15 @@ export const Inputs = forwardRef<HTMLInputElement, InputProps>(
               placeholder:font-bold
               
               focus:outline-none
-              focus:border-red-500/70
-              focus:ring-1 focus:ring-red-500/30
+              focus:border-blue-500/70
+              focus:ring-1 focus:ring-blue-500/30
               focus:bg-zinc-900/60
               
               disabled:opacity-50 disabled:cursor-not-allowed
               
               ${icon ? "pl-11 pr-4" : "px-4"}
-              ${error 
-                ? "border-red-500/70 bg-red-950/20" 
+              ${error
+                ? "border-red-500/70 bg-red-950/20"
                 : "hover:border-zinc-600/70"
               }
               ${className}

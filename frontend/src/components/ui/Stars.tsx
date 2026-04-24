@@ -5,8 +5,8 @@ type StarsProps = {
   onChange: (value: number) => void
 }
 
-// Esse componente e usado no dashboard para escolher a nota do filme ou serie.
-// Se clicar do lado esquerdo, marca meia estrela.
+// Esse componente é usado no dashboard para escolher a nota.
+// Se clicar do lado esquerdo da estrela, marca meia estrela.
 export default function Stars({ value, onChange }: StarsProps) {
   function handleClick(e: React.MouseEvent<HTMLDivElement>, star: number) {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -27,7 +27,7 @@ export default function Stars({ value, onChange }: StarsProps) {
           <div
             key={star}
             onClick={(e) => handleClick(e, star)}
-            className="relative cursor-pointer text-3xl transition-transform hover:scale-110"
+            className="relative cursor-pointer text-4xl transition-transform hover:scale-110"
           >
             {/* estrela base */}
             <span className="text-white/30">★</span>
@@ -50,7 +50,7 @@ export default function Stars({ value, onChange }: StarsProps) {
         )
       })}
 
-      <span className="ml-2 text-sm text-white/70">
+      <span className="ml-2 text-2xl text-white/70">
         {value.toFixed(1)}/5.0
       </span>
     </div>

@@ -3,7 +3,7 @@
 
 /* Classe para efeito GLASS no card principal */
 .glass-card {
-  background: rgba(255, 255, 255, 0.527);
+  background: rgba(255, 255, 255, 0.199);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(255, 255, 255, 0.452);
   backdrop-filter: blur(30px);

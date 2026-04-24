@@ -3,11 +3,11 @@
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { StarfieldBackground } from "@/components/ui/StarfieldBackground"
-import LoginForm from "@/features/auth/components/loginForm"
+import AuthLoginForm from "@/features/auth/components/AuthLoginForm"
 import { useAuth } from "@/contexts/AuthContext"
 
-// Pagina de entrada da autenticacao.
-// Se o usuario ja estiver logado, a gente manda ele para o dashboard.
+// Página de entrada da autenticação.
+// Se o usuário já estiver logado, vai direto para o dashboard.
 export default function LoginPage() {
   const router = useRouter()
   const { isAuthenticated, loading } = useAuth()
@@ -24,8 +24,8 @@ export default function LoginPage() {
 
   return (
     <StarfieldBackground>
-      <main className="w-screen h-screen flex items-center justify-center">
-        <LoginForm />
+      <main className="min-h-screen w-full flex items-center justify-center px-4 py-8">
+        <AuthLoginForm />
       </main>
     </StarfieldBackground>
   )

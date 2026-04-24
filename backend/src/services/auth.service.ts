@@ -16,13 +16,13 @@ type LoginUserRequest = {
 }
 
 // O service concentra as regras de cadastro e login.
-// Aqui fica validacao, consulta no banco e geracao do token.
+// Aqui fica validação, consulta no banco e geração do token.
 export class AuthService {
   async registerUser(data: RegisterUserRequest) {
     const parsedData = registerSchema.safeParse(data)
 
     if (!parsedData.success) {
-      const firstError = parsedData.error.issues[0]?.message || "Dados invÃ¡lidos"
+      const firstError = parsedData.error.issues[0]?.message || "Dados inválidos"
       throw new Error(firstError)
     }
 
@@ -33,7 +33,7 @@ export class AuthService {
     })
 
     if (userAlreadyExists) {
-      throw new Error("Este email jÃ¡ estÃ¡ em uso")
+      throw new Error("Este email já está em uso")
     }
 
     // A senha nunca vai para o banco em texto puro.
@@ -61,7 +61,7 @@ export class AuthService {
     const parsedData = loginSchema.safeParse(data)
 
     if (!parsedData.success) {
-      const firstError = parsedData.error.issues[0]?.message || "Dados invÃ¡lidos"
+      const firstError = parsedData.error.issues[0]?.message || "Dados inválidos"
       throw new Error(firstError)
     }
 
@@ -72,22 +72,22 @@ export class AuthService {
     })
 
     if (!user) {
-      throw new Error("Email ou senha invÃ¡lidos")
+      throw new Error("Email ou senha inválidos")
     }
 
     const passwordIsValid = await bcrypt.compare(password, user.passwordHash)
 
     if (!passwordIsValid) {
-      throw new Error("Email ou senha invÃ¡lidos")
+      throw new Error("Email ou senha inválidos")
     }
 
     const secret = process.env.JWT_SECRET
 
     if (!secret) {
-      throw new Error("JWT_SECRET nÃ£o configurado")
+      throw new Error("JWT_SECRET não configurado")
     }
 
-    // O token leva os dados basicos do usuario para validar as rotas protegidas.
+    // O token leva os dados básicos do usuário para validar as rotas privadas.
     const token = jwt.sign(
       {
         sub: user.id,

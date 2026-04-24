@@ -4,11 +4,10 @@ import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
 import { StarfieldBackground } from "@/components/ui/StarfieldBackground"
-import MainContent from "@/features/auth/components/MainContents"
+import ReviewsDashboard from "@/features/reviews/components/ReviewsDashboard"
 
-// Esse arquivo decide se o usuario pode ou nao ver o dashboard.
-// O card principal foi deixado em outro componente para ficar mais facil de manter.
-
+// Essa página só decide se o usuário pode ver o dashboard.
+// O conteúdo principal ficou em outro componente para este arquivo não crescer demais.
 export default function DashboardPage() {
   const router = useRouter()
   const { user, loading, isAuthenticated, logout } = useAuth()
@@ -39,7 +38,7 @@ export default function DashboardPage() {
   return (
     <StarfieldBackground>
       <main className="min-h-screen w-full flex justify-center px-4 py-8 sm:py-10">
-        <MainContent
+        <ReviewsDashboard
           email={user.email}
           role={user.role}
           onLogout={handleLogout}

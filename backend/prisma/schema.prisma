@@ -14,4 +14,24 @@ model User {
   passwordHash String
   role         String   @default("user")
   createdAt    DateTime @default(now())
+
+  reviews      Review[]
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  title     String
+  mediaType String
+  rating    Float
+  positives String
+  negatives String
+
+  tmdbId    Int?
+  posterUrl String?
+  year      String?
+
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

@@ -2,8 +2,8 @@
 
 import { AuthContextProvider } from "@/contexts/AuthContext"
 
-// Esse arquivo existe para deixar o layout mais limpo.
-// O provider real esta em src/contexts/AuthContext.tsx.
+// Esse arquivo existe só para o layout não ficar carregado.
+// O provider de verdade está em src/contexts/AuthContext.tsx.
 export default function AuthProvider({
   children,
 }: {

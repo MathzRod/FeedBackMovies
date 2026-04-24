@@ -21,7 +21,7 @@ interface Star {
 }
 
 // Esse componente desenha o fundo estrelado em canvas.
-// Login, cadastro e dashboard reutilizam ele para nao duplicar codigo.
+// Login, cadastro e dashboard usam ele para não repetir o mesmo fundo.
 export function StarfieldBackground({
   className,
   children,
@@ -52,7 +52,7 @@ export function StarfieldBackground({
 
     const maxDepth = 1500
 
-    // Cada estrela recebe uma posicao em profundidade para dar o efeito 3D.
+    // Cada estrela recebe uma posição em profundidade para criar o efeito 3D.
     const createStar = (initialZ?: number): Star => ({
       x: (Math.random() - 0.5) * width * 2,
       y: (Math.random() - 0.5) * height * 2,
@@ -77,7 +77,7 @@ export function StarfieldBackground({
     const animate = () => {
       tick++
 
-      // Pintar com transparencia ajuda a criar o rastro do movimento.
+      // Pintar com transparência ajuda a criar o rastro do movimento.
       ctx.fillStyle = "rgba(10, 10, 15, 0.2)"
       ctx.fillRect(0, 0, width, height)
 
@@ -100,7 +100,6 @@ export function StarfieldBackground({
         if (x < -10 || x > width + 10 || y < -10 || y > height + 10) continue
 
         const size = Math.max(0.5, (1 - star.z / maxDepth) * 3)
-
         let opacity = (1 - star.z / maxDepth) * 0.9 + 0.1
 
         if (twinkle && star.twinkleSpeed > 0.015) {

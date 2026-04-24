@@ -8,7 +8,7 @@ type JwtPayload = {
 }
 
 // Esse middleware protege as rotas privadas.
-// Se o token estiver certo, os dados do usuario entram em request.user.
+// Se o token estiver certo, os dados do usuário entram em request.user.
 export function authMiddleware(
   request: Request,
   response: Response,

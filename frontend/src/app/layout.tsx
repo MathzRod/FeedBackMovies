@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Projeto com autenticação",
 }
 
-// Esse layout envolve todas as paginas do app.
+// Esse layout envolve todas as páginas do app.
 // Qualquer rota criada dentro de src/app passa por aqui.
 export default function RootLayout({
   children,

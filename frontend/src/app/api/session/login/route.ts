@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 
-// Essa rota recebe o login pelo frontend, chama o backend
-// e salva os cookies que controlam a sessao no navegador.
+// Essa rota recebe o login do frontend, chama o backend
+// e grava os cookies usados pela sessão no navegador.
 export async function POST(request: NextRequest) {
   const body = await request.json()
 
@@ -27,13 +27,13 @@ export async function POST(request: NextRequest) {
     user: data.user,
   })
 
-  // "session" e um marcador simples usado pelo middleware.
+  // "session" é um marcador simples usado pelo middleware.
   res.cookies.set("session", "true", {
     httpOnly: true,
     path: "/",
   })
 
-  // O token vai para o backend quando precisarmos validar o usuario.
+  // O token vai para o backend quando precisarmos validar o usuário.
   res.cookies.set("token", data.token, {
     httpOnly: true,
     path: "/",

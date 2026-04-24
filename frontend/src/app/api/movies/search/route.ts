@@ -20,6 +20,8 @@ type TMDBSearchResponse = {
   status_message?: string
 }
 
+// Essa rota busca filmes e séries no TMDB.
+// O autocomplete usa ela para não expor a chave direto no client.
 export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get("query")?.trim()
 

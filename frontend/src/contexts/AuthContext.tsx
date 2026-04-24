@@ -25,8 +25,8 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-// Esse contexto guarda o usuario logado para o frontend inteiro.
-// Assim a pagina de login, dashboard e outras rotas podem ler o mesmo estado.
+// Esse contexto guarda o usuário logado para o frontend inteiro.
+// Assim login, cadastro e dashboard conseguem ler o mesmo estado.
 export function AuthContextProvider({
   children,
 }: {
@@ -37,8 +37,8 @@ export function AuthContextProvider({
 
   const refreshUser = useCallback(async () => {
     try {
-      // Essa rota do Next so repassa os cookies para o backend
-      // e devolve os dados do usuario autenticado.
+      // Essa rota do Next só repassa os cookies para o backend
+      // e devolve os dados do usuário autenticado.
       const response = await fetch("/api/session/me", {
         method: "GET",
         credentials: "include",
@@ -70,7 +70,7 @@ export function AuthContextProvider({
 
   useEffect(() => {
     async function loadAuth() {
-      // Quando a app abre, tentamos descobrir se ja existe sessao salva.
+      // Quando a app abre, tentamos descobrir se já existe sessão salva.
       setLoading(true)
       await refreshUser()
       setLoading(false)
@@ -97,7 +97,7 @@ export function useAuth() {
   const context = useContext(AuthContext)
 
   if (!context) {
-    // Esse erro ajuda a lembrar que toda a app precisa estar dentro do provider.
+    // Esse erro ajuda quando esquecemos de envolver a app no provider.
     throw new Error("useAuth deve ser usado dentro de AuthContextProvider")
   }
 

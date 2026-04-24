@@ -1,8 +1,8 @@
 import { Request, Response } from "express"
 import { AuthService } from "../services/auth.service"
 
-// O controller recebe a requisicao HTTP e devolve a resposta.
-// A regra de negocio de verdade fica no service.
+// O controller recebe a requisição HTTP e devolve a resposta.
+// A regra de negócio de verdade fica no service.
 export class AuthController {
   async register(request: Request, response: Response) {
     try {
@@ -18,7 +18,7 @@ export class AuthController {
       })
 
       return response.status(201).json({
-        message: "UsuÃ¡rio criado com sucesso",
+        message: "Usuário criado com sucesso",
         user,
       })
     } catch (error) {
@@ -26,7 +26,7 @@ export class AuthController {
         error instanceof Error ? error.message : "Erro interno do servidor"
 
       const statusCode =
-        errorMessage === "Este email jÃ¡ estÃ¡ em uso" ? 409 : 400
+        errorMessage === "Este email já está em uso" ? 409 : 400
 
       return response.status(statusCode).json({
         error: errorMessage,

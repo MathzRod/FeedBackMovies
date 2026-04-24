@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 
-// Logout limpa o lado do backend e tambem apaga os cookies do frontend.
+// Logout faz duas coisas:
+// 1) avisa o backend
+// 2) limpa os cookies que o frontend usa para sessão
 export async function POST(request: NextRequest) {
   const cookie = request.headers.get("cookie")
 
