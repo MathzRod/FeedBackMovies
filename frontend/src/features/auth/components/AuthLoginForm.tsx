@@ -109,10 +109,6 @@ export default function AuthLoginForm() {
           href="/signup"
           linkLabel="Cadastre-se"
         />
-
-        <span className="text-zinc-900 text-sm text-center">Ou entre com</span>
-
-        <GoogleAuthButton label="Entrar com Google" />
       </form>
     </AuthCard>
   )
