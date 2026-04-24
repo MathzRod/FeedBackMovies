@@ -5,8 +5,9 @@ import { NextRequest, NextResponse } from "next/server"
 // 2) limpa os cookies que o frontend usa para sessão
 export async function POST(request: NextRequest) {
   const cookie = request.headers.get("cookie")
+  const backendUrl = process.env.BACKEND_URL
 
-  await fetch("http:/${process.env.BACKEND_URL}//auth/logout", {
+  await fetch(`${backendUrl}/auth/logout`, {
     method: "POST",
     headers: {
       cookie: cookie || "",
