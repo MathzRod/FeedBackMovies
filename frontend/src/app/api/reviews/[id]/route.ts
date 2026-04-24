@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 
-const BACKEND_URL = "http://localhost:3333"
+const BACKEND_URL = process.env.BACKEND_URL
 
 type RouteParams = {
   params: Promise<{

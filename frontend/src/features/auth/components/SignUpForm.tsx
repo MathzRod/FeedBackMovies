@@ -37,7 +37,7 @@ export default function SignUpForm() {
       setLoading(true)
 
       // Cadastro vai direto para o backend porque ainda não precisamos salvar cookie aqui.
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
+      const response = await fetch(`/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

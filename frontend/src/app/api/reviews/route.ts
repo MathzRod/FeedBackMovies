@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 
-const BACKEND_URL = "http://localhost:3333"
+const BACKEND_URL = "process.env.BACKEND_URL"
 
 // Essa rota só faz a ponte entre o App Router e o backend de reviews.
 export async function GET(request: NextRequest) {

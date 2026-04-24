@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
 
+
 // Essa rota recebe o login do frontend, chama o backend
 // e grava os cookies usados pela sessão no navegador.
 export async function POST(request: NextRequest) {
   const body = await request.json()
+  const backendUrl = process.env.BACKEND_URL
 
-  const response = await fetch("http://localhost:3333/auth/login", {
+  const response = await fetch(`${backendUrl}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

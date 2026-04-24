@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server"
 export async function POST(request: NextRequest) {
   const cookie = request.headers.get("cookie")
 
-  await fetch("http://localhost:3333/auth/logout", {
+  await fetch("http:/${process.env.BACKEND_URL}//auth/logout", {
     method: "POST",
     headers: {
       cookie: cookie || "",

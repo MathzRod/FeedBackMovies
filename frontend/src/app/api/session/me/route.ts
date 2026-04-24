@@ -4,8 +4,9 @@ import { NextRequest, NextResponse } from "next/server"
 // Ela só reaproveita o cookie que já chegou do navegador.
 export async function GET(request: NextRequest) {
   const cookie = request.headers.get("cookie")
+  const backendUrl = process.env.BACKEND_URL
 
-  const response = await fetch("http://localhost:3333/auth/me", {
+  const response = await fetch(`${backendUrl}/auth/me`, {
     method: "GET",
     headers: {
       cookie: cookie || "",
