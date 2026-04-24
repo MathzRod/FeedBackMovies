@@ -37,7 +37,7 @@ export default function SignUpForm() {
       setLoading(true)
 
       // Cadastro vai direto para o backend porque ainda não precisamos salvar cookie aqui.
-      const response = await fetch(`/auth/register`, {
+      const response = await fetch("/api/session/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -147,12 +147,6 @@ export default function SignUpForm() {
           href="/login"
           linkLabel="Entrar"
         />
-
-        <span className="text-zinc-900 text-sm text-center">
-          Ou cadastre-se com
-        </span>
-
-        <GoogleAuthButton label="Continuar com Google" />
       </form>
     </AuthCard>
   )

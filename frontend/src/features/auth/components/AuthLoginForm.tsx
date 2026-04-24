@@ -3,7 +3,6 @@
 import { Inputs } from "@/components/ui/Input"
 import AuthCard from "@/features/auth/components/AuthCard"
 import AuthLinkRow from "@/features/auth/components/AuthLinkRow"
-import GoogleAuthButton from "@/features/auth/components/GoogleAuthButton"
 import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "next/navigation"
 import { FormEvent, useState } from "react"
