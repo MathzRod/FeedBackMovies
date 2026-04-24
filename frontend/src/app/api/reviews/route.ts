@@ -1,41 +1,88 @@
 import { NextRequest, NextResponse } from "next/server"
 
-const BACKEND_URL = "process.env.BACKEND_URL"
+function getBackendUrl() {
+  const backendUrl = process.env.BACKEND_URL
 
-// Essa rota só faz a ponte entre o App Router e o backend de reviews.
+  if (!backendUrl) {
+    throw new Error("BACKEND_URL não configurada")
+  }
+
+  return backendUrl
+}
+
+async function readResponse(response: Response) {
+  const text = await response.text()
+
+  if (!text) {
+    return null
+  }
+
+  try {
+    return JSON.parse(text)
+  } catch {
+    return { error: text }
+  }
+}
+
 export async function GET(request: NextRequest) {
-  const cookie = request.headers.get("cookie")
+  try {
+    const cookie = request.headers.get("cookie")
+    const backendUrl = getBackendUrl()
 
-  const response = await fetch(`${BACKEND_URL}/reviews`, {
-    method: "GET",
-    headers: {
-      cookie: cookie || "",
-    },
-  })
+    const response = await fetch(`${backendUrl}/reviews`, {
+      method: "GET",
+      headers: {
+        cookie: cookie || "",
+      },
+    })
 
-  const data = await response.json()
+    const data = await readResponse(response)
 
-  return NextResponse.json(data, {
-    status: response.status,
-  })
+    return NextResponse.json(data, {
+      status: response.status,
+    })
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Erro ao buscar avaliações",
+      },
+      { status: 500 }
+    )
+  }
 }
 
 export async function POST(request: NextRequest) {
-  const body = await request.json()
-  const cookie = request.headers.get("cookie")
+  try {
+    const body = await request.json()
+    const cookie = request.headers.get("cookie")
+    const backendUrl = getBackendUrl()
 
-  const response = await fetch(`${BACKEND_URL}/reviews`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      cookie: cookie || "",
-    },
-    body: JSON.stringify(body),
-  })
+    const response = await fetch(`${backendUrl}/reviews`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        cookie: cookie || "",
+      },
+      body: JSON.stringify(body),
+    })
 
-  const data = await response.json()
+    const data = await readResponse(response)
 
-  return NextResponse.json(data, {
-    status: response.status,
-  })
+    return NextResponse.json(data, {
+      status: response.status,
+    })
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Erro ao salvar avaliação",
+      },
+      { status: 500 }
+    )
+  }
 }
